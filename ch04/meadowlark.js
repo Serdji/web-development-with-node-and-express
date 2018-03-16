@@ -1,10 +1,10 @@
-var express = require('express');
-var fortune = require('./lib/fortune.js');
+const express = require('express');
+const fortune = require('./lib/fortune.js');
 
-var app = express();
+const app = express();
 
 // set up handlebars view engine
-var handlebars = require('express3-handlebars')
+const handlebars = require('express3-handlebars')
 	.create({ defaultLayout:'main' });
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -14,10 +14,15 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-	res.render('home');
+	res.render('home', {
+		title: 'Главная страница'
+	});
 });
-app.get('/about', function(req,res){
-	res.render('about', { fortune: fortune.getFortune() } );
+app.get('/about', (req,res) => {
+	res.render('about', {
+		fortune: fortune.getFortune(),
+		title: 'Рандомный текст'
+	} );
 });
 
 // 404 catch-all handler (middleware)
